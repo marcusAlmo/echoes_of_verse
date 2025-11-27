@@ -16,6 +16,17 @@
                             900: '#0f172a',
                             950: '#020617',
                         }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'xp-pop': 'xpPop 1.2s ease-out forwards',
+                    },
+                    keyframes: {
+                        xpPop: {
+                            '0%': { transform: 'translateY(0) scale(0.8)', opacity: '0' },
+                            '20%': { transform: 'translateY(-20px) scale(1.2)', opacity: '1' },
+                            '100%': { transform: 'translateY(-50px) scale(1)', opacity: '0' },
+                        }
                     }
                 }
             }
@@ -34,14 +45,14 @@
             font-family: 'Cormorant Garamond', serif;
         }
 
-        /* --- IMMERSIVE BACKGROUND STATES (JOURNEY MODE) --- */
+        /* --- IMMERSIVE BACKGROUND STATES --- */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Default Ambient - Darkened for better contrast */
+        /* Default Ambient */
         .ambient-default { background: linear-gradient(-45deg, #c4e0f5, #d8b4fe, #cbd5e1); background-size: 400% 400%; animation: gradientBG 15s ease infinite; }
         .dark .ambient-default { background: linear-gradient(-45deg, #0f172a, #1e1b4b, #020617); background-size: 400% 400%; animation: gradientBG 15s ease infinite; }
 
@@ -62,9 +73,9 @@
         .dark .mood-love { background: linear-gradient(to right, #521818 0%, #701c1c 100%); }
 
 
-        /* Glassmorphism Cards - Increased Opacity for Light Mode */
+        /* Glassmorphism Cards */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.85); /* Increased from 0.65 to 0.85 for readability */
+            background: rgba(255, 255, 255, 0.85); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.9);
@@ -94,22 +105,18 @@
             font-size: 0.6em;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: #ec4899; /* Pink-500 */
+            color: #ec4899; 
             vertical-align: super;
             margin-right: 0.2em;
             font-weight: bold;
         }
         .dark .guide-note { color: #f472b6; }
-        .stress-mark {
-            border-bottom: 2px solid #f59e0b; /* Amber-500 */
-            font-weight: 600;
-        }
+        .stress-mark { border-bottom: 2px solid #f59e0b; font-weight: 600; }
+        .intonation-up { color: #10b981; font-weight: bold; vertical-align: super; font-size: 0.7em; }
+        .intonation-down { color: #ef4444; font-weight: bold; vertical-align: sub; font-size: 0.7em; }
         
         /* Journey Mode Specifics */
-        .journey-card {
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        .journey-card { cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .journey-card:hover { transform: scale(1.02); }
         .journey-nav-hint { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
@@ -120,7 +127,7 @@
         
         /* Updated Footprint Trail Animation */
         .anim-footprint {
-            color: #60a5fa; /* Slightly darker blue for light mode visibility */
+            color: #60a5fa; 
             font-size: 2.5rem; 
             opacity: 0;
             animation: walkTrail 8s forwards;
@@ -146,26 +153,52 @@
         .modal-overlay { opacity: 0; pointer-events: none; transition: all 0.4s ease; }
         .modal-open { opacity: 1; pointer-events: auto; }
 
+        /* Engagement Meter - Center Outward */
+        .gauge-bar { transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        
+        /* Flip Card Effect for Quiz */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+
+        /* Enhanced Point Animation */
+        .point-pop {
+            position: absolute;
+            color: #f59e0b; /* Amber 500 */
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            animation: xp-pop 1.2s ease-out forwards;
+            pointer-events: none;
+            z-index: 100;
+            white-space: nowrap;
+        }
     </style>
 </head>
-<body id="main-body" class="ambient-default min-h-screen text-slate-900 dark:text-slate-200 overflow-x-hidden selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-800 dark:selection:text-indigo-200">
+<body id="main-body" class="ambient-default min-h-screen text-slate-900 dark:text-slate-200 overflow-x-hidden selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-800 dark:selection:text-indigo-200 pt-10">
 
     <!-- Dynamic Animation Layer -->
     <div id="anim-layer" class="anim-container"></div>
 
-    <!-- Intro Modal (Appears Once) -->
+    <!-- Intro Modal -->
     <div id="intro-modal" class="modal-overlay fixed inset-0 z-[60] flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md"></div>
         <div class="glass-panel relative z-10 w-full max-w-2xl rounded-2xl p-8 md:p-12 transform scale-95 transition-transform duration-500 shadow-2xl text-center">
-            
             <p class="text-xs uppercase tracking-[0.4em] text-indigo-800 dark:text-indigo-300 mb-4 opacity-90 font-bold">Welcome to</p>
             <h1 class="serif-font text-5xl md:text-6xl text-slate-900 dark:text-white mb-6">Whispers of Verse</h1>
             
+            <div class="mb-8 max-w-xs mx-auto">
+                <label for="user-name-input" class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">Enter your name, Traveler</label>
+                <input type="text" id="user-name-input" class="w-full text-center px-4 py-2 rounded-lg bg-white/50 dark:bg-black/30 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Your Name">
+            </div>
+
             <p class="text-slate-700 dark:text-slate-300 font-light text-lg leading-relaxed mb-8">
                 An interactive literary journey exploring the profound themes of 
                 <span class="font-medium text-indigo-700 dark:text-indigo-300">compassion</span> 
@@ -174,24 +207,6 @@
                 in Pablo Neruda's poetry.
             </p>
 
-            <div class="mb-10 p-6 bg-white/60 dark:bg-black/20 rounded-xl">
-                <p class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-semibold">Curated By</p>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-medium text-slate-800 dark:text-slate-200 mb-6">
-                    <div>Mark June Almojuela</div>
-                    <div>Kenneth Belardo</div>
-                    <div>Mark Nelson Delavin</div>
-                    <div>Precious Tibaijia</div>
-                </div>
-                
-                <!-- Added CTA Message -->
-                <p class="text-xs text-slate-600 dark:text-slate-400 mb-3 italic border-t border-slate-300 dark:border-slate-700 pt-4 font-medium">To submit your literary piece, contact us:</p>
-                
-                <div class="flex justify-center gap-6">
-                    <a href="#" class="text-slate-500 hover:text-blue-700 transition-colors text-2xl"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-slate-500 hover:text-blue-600 transition-colors text-2xl"><i class="fab fa-facebook-messenger"></i></a>
-                </div>
-            </div>
-
             <button onclick="closeIntro()" class="group relative inline-flex items-center justify-center px-8 py-3 text-sm font-medium text-white transition-all duration-200 bg-indigo-700 rounded-full hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <span>Let the journey begin</span>
                 <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
@@ -199,7 +214,7 @@
         </div>
     </div>
 
-    <!-- Read-Along Tutorial Modal (Appears once when toggled) -->
+    <!-- Read-Along Tutorial Modal -->
     <div id="read-tutorial-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="closeReadTutorial()"></div>
         <div class="glass-panel relative z-10 w-full max-w-md rounded-2xl p-8 transform scale-95 transition-transform duration-300">
@@ -207,7 +222,6 @@
                 <h3 class="serif-font text-2xl text-slate-900 dark:text-white mb-2">How to Read Along</h3>
                 <p class="text-sm text-slate-600 dark:text-slate-400">Master the rhythm and emotion of the verse.</p>
             </div>
-            
             <div class="space-y-6 mb-8">
                 <div class="flex items-start gap-4">
                     <div class="w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center flex-shrink-0 text-pink-600 dark:text-pink-400">
@@ -215,68 +229,116 @@
                     </div>
                     <div>
                         <p class="font-medium text-slate-800 dark:text-slate-200 mb-1">Performance Notes</p>
-                        <p class="text-xs text-slate-600 dark:text-slate-400">Pink text like <span class="text-pink-600 dark:text-pink-500 text-xs font-bold">[SOFTLY]</span> indicates emotion, volume, or speed.</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Pink text like <span class="text-pink-600 dark:text-pink-500 text-xs font-bold">[SOFTLY]</span> indicates emotion.</p>
                     </div>
                 </div>
-                
                 <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0 text-amber-600 dark:text-amber-400">
-                        <i class="fas fa-bolt"></i>
+                    <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 text-green-600 dark:text-green-400">
+                        <i class="fas fa-arrow-up"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-slate-800 dark:text-slate-200 mb-1">Stress & Emphasis</p>
-                        <p class="text-xs text-slate-600 dark:text-slate-400">Words with a <span class="border-b-2 border-amber-500 font-bold">Gold Underline</span> should be spoken with weight and emphasis.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 text-indigo-600 dark:text-indigo-400">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div>
-                        <p class="font-medium text-slate-800 dark:text-slate-200 mb-1">Rhythm & Meter</p>
-                        <p class="text-xs text-slate-600 dark:text-slate-400">Follow the line breaks and punctuation. Commas are short breaths; periods are full stops.</p>
+                        <p class="font-medium text-slate-800 dark:text-slate-200 mb-1">Intonation</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Arrows <span class="intonation-up">↑</span> indicate rising pitch, <span class="intonation-down">↓</span> indicate falling pitch.</p>
                     </div>
                 </div>
             </div>
-
-            <button onclick="closeReadTutorial()" class="w-full py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-lg text-sm font-medium transition-colors">
-                Got it
-            </button>
+            <button onclick="closeReadTutorial()" class="w-full py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-lg text-sm font-medium transition-colors">Got it</button>
         </div>
     </div>
 
-    <!-- About Us Modal (Triggered manually) -->
-    <div id="about-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="toggleAbout()"></div>
-        <div class="glass-panel relative z-10 w-full max-w-lg rounded-2xl p-8 transform scale-95 transition-transform duration-300">
-            <button onclick="toggleAbout()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-700 dark:hover:text-white transition-colors">
+    <!-- Flashcard Quiz Modal -->
+    <div id="quiz-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="toggleQuiz()"></div>
+        <div class="glass-panel relative z-10 w-full max-w-xl rounded-2xl p-8 transform scale-95 transition-transform duration-300 min-h-[400px] flex flex-col">
+            <button onclick="toggleQuiz()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-700 dark:hover:text-white transition-colors">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            <div class="text-center mb-8">
-                <p class="text-xs uppercase tracking-[0.3em] text-indigo-800 dark:text-indigo-300 mb-2 opacity-90 font-semibold">The Curators</p>
-                <h2 class="serif-font text-3xl text-slate-900 dark:text-white">Meet the Team</h2>
+            <div class="text-center mb-6">
+                <p class="text-xs uppercase tracking-widest text-indigo-700 dark:text-indigo-300 mb-2 font-bold">Flashcard Challenge</p>
+                <h2 class="serif-font text-3xl text-slate-900 dark:text-white">Knowledge Check</h2>
+                <div class="w-full bg-slate-200 dark:bg-slate-700 h-1 mt-4 rounded-full overflow-hidden">
+                    <div id="quiz-progress-bar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
+                </div>
             </div>
-            <div class="space-y-4 font-light text-center">
-                <div class="p-3 hover:bg-white/50 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg text-slate-800 dark:text-slate-100">MARK JUNE ALMOJUELA</p><p class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Researcher & Content</p></div>
-                <div class="p-3 hover:bg-white/50 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg text-slate-800 dark:text-slate-100">KENNETH BELARDO</p><p class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Design Lead</p></div>
-                <div class="p-3 hover:bg-white/50 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg text-slate-800 dark:text-slate-100">MARK NELSON DELAVIN</p><p class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Literary Analyst</p></div>
-                <div class="p-3 hover:bg-white/50 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg text-slate-800 dark:text-slate-100">PRECIOUS TIBAIJIA</p><p class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Project Manager</p></div>
+            <div id="quiz-card-container" class="flex-grow flex items-center justify-center relative perspective-1000"></div>
+            <div class="flex justify-between items-center mt-6">
+                <p id="quiz-counter" class="text-xs font-bold text-slate-500 uppercase tracking-widest">Card 1 of 3</p>
+                <button onclick="nextQuestion()" id="quiz-next-btn" class="hidden px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-sm font-bold transition-all">Next Card <i class="fas fa-arrow-right ml-2"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Project Modal (Renamed from About Us) -->
+    <div id="about-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="toggleAbout()"></div>
+        <div class="glass-panel relative z-10 w-full max-w-lg rounded-2xl p-8 transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
+            <button onclick="toggleAbout()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-700 dark:hover:text-white transition-colors"><i class="fas fa-times text-xl"></i></button>
+            
+            <div class="text-center mb-8">
+                <p class="text-xs uppercase tracking-[0.3em] text-indigo-800 dark:text-indigo-300 mb-2 opacity-90 font-semibold">About the Project</p>
+                <h2 class="serif-font text-3xl text-slate-900 dark:text-white">Purpose & Team</h2>
+            </div>
+
+            <!-- Purpose -->
+            <div class="mb-8">
+                <h3 class="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3 text-center">Project Purpose</h3>
+                <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed text-center">
+                    This interactive archive serves as a digital exploration of Latin American poetry, specifically focusing on the thematic resonance of compassion and joy. By leveraging immersive web technologies, we aim to bridge the gap between classic literature and modern digital engagement, providing a multi-sensory reading experience.
+                </p>
+            </div>
+
+            <!-- Curators -->
+            <div class="mb-8">
+                <h3 class="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4 text-center">The Curators</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="p-3 bg-white/50 dark:bg-black/20 rounded-lg text-center"><p class="font-medium text-sm text-slate-800 dark:text-slate-100">MARK JUNE ALMOJUELA</p><p class="text-[10px] text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Researcher</p></div>
+                    <div class="p-3 bg-white/50 dark:bg-black/20 rounded-lg text-center"><p class="font-medium text-sm text-slate-800 dark:text-slate-100">KENNETH BELARDO</p><p class="text-[10px] text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Design Lead</p></div>
+                    <div class="p-3 bg-white/50 dark:bg-black/20 rounded-lg text-center"><p class="font-medium text-sm text-slate-800 dark:text-slate-100">MARK NELSON DELAVIN</p><p class="text-[10px] text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Analyst</p></div>
+                    <div class="p-3 bg-white/50 dark:bg-black/20 rounded-lg text-center"><p class="font-medium text-sm text-slate-800 dark:text-slate-100">PRECIOUS TIBAIJIA</p><p class="text-[10px] text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Manager</p></div>
+                </div>
+            </div>
+
+            <!-- Submission CTA -->
+            <div class="text-center pt-6 border-t border-slate-200 dark:border-slate-700">
+                <p class="text-sm font-medium text-slate-800 dark:text-slate-200 mb-3">Have a poem to share?</p>
+                <a href="mailto:submit@echoesofverse.com" class="inline-flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-sm font-bold transition-colors">
+                    <i class="fas fa-envelope"></i> Send your literary piece
+                </a>
             </div>
         </div>
     </div>
 
     <!-- Main Container -->
-    <div class="relative z-10 container mx-auto px-4 py-8 lg:py-12 max-w-6xl">
+    <div class="relative z-10 container mx-auto px-4 py-6 lg:py-10 max-w-7xl">
         
         <!-- Header -->
-        <header class="text-center mb-10 fade-in flex flex-col items-center">
+        <header class="text-center mb-8 fade-in flex flex-col items-center relative">
             <p class="text-xs uppercase tracking-[0.3em] text-indigo-900 dark:text-indigo-300 mb-3 opacity-90 font-semibold">Literary Archive Project</p>
             <h1 class="serif-font text-5xl md:text-7xl text-slate-900 dark:text-slate-100 mb-4 tracking-tight">Whispers of Verse</h1>
+            <p id="welcome-message" class="text-sm font-medium text-indigo-700 dark:text-indigo-300 h-6"></p>
+            
+            <!-- Center-Growing Gauge -->
+            <div class="w-full max-w-lg mt-6 bg-slate-200/50 dark:bg-slate-700/50 h-2 rounded-full flex justify-center backdrop-blur-sm relative border border-slate-300/30 dark:border-slate-600/30 shadow-inner">
+                <div id="engagement-meter" class="gauge-bar h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-0 rounded-full"></div>
+            </div>
+
+            <!-- Insight & Time (Centered Under Gauge, No Pill Background) -->
+            <div class="flex justify-center items-center gap-8 mt-4 text-slate-600 dark:text-slate-400 font-medium relative">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-brain text-indigo-600 dark:text-indigo-400"></i>
+                    <span class="text-xs uppercase tracking-wider">Insight: <span id="score-display" class="font-bold text-slate-800 dark:text-slate-200">0</span>%</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-clock text-pink-600 dark:text-pink-400"></i>
+                    <span class="text-xs uppercase tracking-wider">Time: <span id="reading-timer" class="font-bold text-slate-800 dark:text-slate-200">00:00</span></span>
+                </div>
+                <!-- Animation Anchor -->
+                <div id="point-animation-anchor" class="absolute -right-12 top-0"></div>
+            </div>
         </header>
 
-        <!-- Control Panel -->
-        <div class="flex flex-col lg:flex-row justify-center items-center gap-6 mb-12 fade-in" style="animation-delay: 0.2s;">
+        <!-- Control Panel (Reverted to Flex Row) -->
+        <div class="flex flex-col lg:flex-row justify-center items-center gap-4 mb-12 fade-in" style="animation-delay: 0.2s;">
             <!-- Poem Selector -->
             <div class="glass-panel p-2 rounded-full flex gap-2">
                 <button onclick="changePoem('tinyfeet')" id="btn-tinyfeet" class="px-6 py-2 rounded-full text-sm transition-all duration-300 font-medium">Tiny Feet</button>
@@ -285,31 +347,32 @@
 
             <!-- Mode Toggles -->
             <div class="flex flex-wrap justify-center gap-3">
-                <!-- Journey Mode -->
                 <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer group hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all" onclick="toggleJourney()">
                     <div id="journey-indicator" class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300"></div>
                     <span class="text-xs uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 group-hover:text-purple-700 dark:group-hover:text-purple-400">Journey</span>
                 </div>
 
-                <!-- Read-Along (New) -->
                 <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer group hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all" onclick="toggleReadAlong()">
                     <div id="read-indicator" class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300"></div>
                     <span class="text-xs uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 group-hover:text-pink-700 dark:group-hover:text-pink-400">Read-Along</span>
                 </div>
 
-                <!-- Resonance -->
                 <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer group hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all" onclick="toggleResonance()">
                     <div id="resonance-indicator" class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300"></div>
                     <span class="text-xs uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-700 dark:group-hover:text-indigo-400">Resonance</span>
                 </div>
 
-                <!-- Context -->
                 <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer group hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all" onclick="toggleContext()">
                     <div id="context-indicator" class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300"></div>
                     <span class="text-xs uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 group-hover:text-emerald-700 dark:group-hover:text-emerald-400">Context</span>
                 </div>
+                
+                <!-- QUIZ BUTTON -->
+                <button onclick="toggleQuiz()" class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer group hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all text-indigo-700 dark:text-indigo-300 animate-pulse-slow">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="text-xs uppercase tracking-wider font-bold">Challenge</span>
+                </button>
 
-                <!-- Dark Mode -->
                 <button onclick="toggleTheme()" class="glass-panel w-9 h-9 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 transition-colors">
                     <i id="theme-icon" class="fas fa-moon"></i>
                 </button>
@@ -321,9 +384,7 @@
             <!-- Poem Section -->
             <section id="poem-container" class="lg:col-span-7 glass-panel rounded-3xl p-8 md:p-12 relative overflow-hidden min-h-[600px] flex flex-col justify-center">
                 <div class="absolute top-0 right-0 p-6 opacity-10 pointer-events-none"><i class="fas fa-quote-right text-8xl text-slate-800 dark:text-white"></i></div>
-                
                 <div id="content-area" class="transition-opacity duration-500"></div>
-
                 <!-- Journey Nav -->
                 <div id="journey-controls" class="hidden mt-8 text-center text-slate-500 dark:text-slate-400 text-sm">
                     <p class="journey-nav-hint font-medium"><i class="fas fa-hand-pointer mr-2"></i>Click text to continue journey</p>
@@ -335,41 +396,54 @@
             <aside class="lg:col-span-5 flex flex-col gap-6 relative">
                 <!-- Analysis View -->
                 <div id="view-analysis" class="flex flex-col gap-6 transition-all duration-500 opacity-100 transform translate-x-0">
-                    <div class="glass-panel rounded-2xl p-8 border-l-4 border-indigo-400 dark:border-indigo-600">
+                    <div class="glass-panel rounded-2xl p-6 md:p-8 border-l-4 border-indigo-400 dark:border-indigo-600">
                         <h3 class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-bold">Database Entry</h3>
                         <div id="metadata-area"></div>
                     </div>
-                    <div class="glass-panel rounded-2xl p-8">
+                    
+                    <!-- Expanded Bio Section -->
+                    <div class="glass-panel rounded-2xl p-6 md:p-8">
+                        <h3 class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-bold">Author Biography</h3>
+                        <div id="bio-area" class="text-sm leading-relaxed text-slate-800 dark:text-slate-300"></div>
+                    </div>
+
+                    <!-- Reader's Note -->
+                    <div class="glass-panel rounded-2xl p-6 relative">
+                        <h3 class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-bold">Reader's Notebook</h3>
+                        <textarea id="reader-notes" class="w-full bg-white/50 dark:bg-black/20 rounded-lg p-3 text-sm text-slate-700 dark:text-slate-300 resize-none border border-transparent focus:border-indigo-400 outline-none h-24 transition-all" placeholder="Write your thoughts here..."></textarea>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6 md:p-8">
                         <h3 class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-bold">Literary Analysis</h3>
                         <div id="analysis-area" class="text-sm leading-relaxed text-slate-800 dark:text-slate-300"></div>
                     </div>
-                    <div class="glass-panel rounded-2xl p-8">
+                    <div class="glass-panel rounded-2xl p-6 md:p-8">
                         <h3 class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-bold">Emotional Palette</h3>
                         <div id="mood-area" class="flex flex-wrap gap-2"></div>
                     </div>
                 </div>
 
-                <!-- Context View -->
+                <!-- Context View (Optimized for Mobile/Tablet - TIGHTER LAYOUT) -->
                 <div id="view-context" class="absolute inset-0 flex flex-col gap-4 transition-all duration-500 opacity-0 transform translate-x-10 pointer-events-none">
-                    <div class="glass-panel rounded-2xl p-6 bg-white/90 dark:bg-slate-900/80 border-l-4 border-emerald-500 dark:border-emerald-600 h-full overflow-y-auto">
-                        <div class="flex items-center gap-2 mb-6 text-emerald-800 dark:text-emerald-400">
+                    <div class="glass-panel rounded-2xl p-5 bg-white/95 dark:bg-slate-900/95 border-l-4 border-emerald-500 dark:border-emerald-600 h-fit max-h-full overflow-y-auto custom-scrollbar shadow-xl">
+                        <div class="flex items-center gap-2 mb-3 text-emerald-800 dark:text-emerald-400 sticky top-0 bg-inherit pb-1 z-10">
                             <i class="fas fa-history"></i>
                             <h3 class="text-xs uppercase tracking-widest font-bold">Historical & Social Context</h3>
                         </div>
-                        <div class="space-y-6">
-                            <div><h4 class="font-serif text-lg text-slate-900 dark:text-slate-200 mb-2 font-semibold">Social Factors</h4><p id="ctx-social" class="text-sm text-slate-800 dark:text-slate-400 leading-relaxed"></p></div>
+                        <div class="space-y-3">
+                            <div><h4 class="font-serif text-sm md:text-base text-slate-900 dark:text-slate-200 mb-1 font-semibold">Social Factors</h4><p id="ctx-social" class="text-xs md:text-sm text-slate-800 dark:text-slate-400 leading-relaxed"></p></div>
                             <hr class="border-slate-300 dark:border-slate-700">
-                            <div><h4 class="font-serif text-lg text-slate-900 dark:text-slate-200 mb-2 font-semibold">Political Climate</h4><p id="ctx-political" class="text-sm text-slate-800 dark:text-slate-400 leading-relaxed"></p></div>
+                            <div><h4 class="font-serif text-sm md:text-base text-slate-900 dark:text-slate-200 mb-1 font-semibold">Political Climate</h4><p id="ctx-political" class="text-xs md:text-sm text-slate-800 dark:text-slate-400 leading-relaxed"></p></div>
                             <hr class="border-slate-300 dark:border-slate-700">
-                            <div><h4 class="font-serif text-lg text-slate-900 dark:text-slate-200 mb-2 font-semibold">Literary Movement</h4><p id="ctx-literary" class="text-sm text-slate-800 dark:text-slate-400 leading-relaxed"></p></div>
+                            <div><h4 class="font-serif text-sm md:text-base text-slate-900 dark:text-slate-200 mb-1 font-semibold">Literary Movement</h4><p id="ctx-literary" class="text-xs md:text-sm text-slate-800 dark:text-slate-400 leading-relaxed"></p></div>
                         </div>
                     </div>
                 </div>
             </aside>
         </main>
 
-        <footer class="mt-20 text-center pb-8">
-            <button onclick="toggleAbout()" class="text-xs uppercase tracking-widest text-indigo-900/70 dark:text-indigo-300/60 hover:text-indigo-700 dark:hover:text-indigo-200 transition-colors mb-4 border-b border-dashed border-indigo-900/30 pb-1 font-semibold">About the Curators</button>
+        <footer class="mt-20 text-center pb-8 flex flex-col items-center">
+            <button onclick="toggleAbout()" class="text-xs uppercase tracking-widest text-indigo-900/70 dark:text-indigo-300/60 hover:text-indigo-700 dark:hover:text-indigo-200 transition-colors mb-4 border-b border-dashed border-indigo-900/30 pb-1 font-semibold">About the Project</button>
             <p class="text-slate-500 dark:text-slate-400 text-sm font-light">&copy; 2023 Literary Database Project.</p>
         </footer>
     </div>
@@ -383,40 +457,47 @@
                 author: "Gabriela Mistral",
                 year: "1922",
                 origin: "Chile",
+                bio: "Gabriela Mistral (Lucila Godoy Alcayaga, 1889-1957) was a Chilean poet-diplomat, educator and humanist. She was the first Latin American author to receive the Nobel Prize in Literature in 1945. Rising from a humble rural background in the Elqui Valley, she worked as a teacher and became a fierce advocate for children's rights and education reform across the Americas.",
                 stanzas: [
-                    { 
-                        text: "Tiny feet of children,<br>Blue with <span class='highlight-word'>cold</span>,<br>How can they see you and not <span class='highlight-word'>cover</span> you?<br>Oh, God!", 
-                        guide: "<span class='guide-note'>[Softly, with pity]</span> Tiny feet of children,<br><span class='stress-mark'>Blue</span> with <span class='highlight-word stress-mark'>cold</span>,<br><span class='guide-note'>[Rising intonation]</span> How can they <span class='stress-mark'>see</span> you and not <span class='highlight-word'>cover</span> you?<br><span class='guide-note'>[Pause]</span> Oh, God!",
-                        mood: "mood-ice" 
-                    },
-                    { 
-                        text: "Tiny <span class='highlight-word'>wounded</span> feet,<br>Bruised all over by <span class='highlight-word'>pebbles</span>,<br>Abused by <span class='highlight-word'>snow</span> and soil!", 
-                        guide: "<span class='guide-note'>[Anguished]</span> Tiny <span class='highlight-word'>wounded</span> feet,<br>Bruised all over by <span class='highlight-word stress-mark'>pebbles</span>,<br><span class='guide-note'>[Sharp]</span> Abused by <span class='highlight-word'>snow</span> and soil!",
-                        mood: "mood-pain" 
-                    },
-                    { 
-                        text: "Man, being blind, ignores<br>that where you step, you leave<br>A <span class='highlight-word'>blossom</span> of bright light,<br>that where you have placed<br>your <span class='highlight-word'>bleeding</span> little soles<br>a red <span class='highlight-word'>tuberose</span> grows.", 
-                        guide: "<span class='guide-note'>[Firmly]</span> Man, being <span class='stress-mark'>blind</span>, ignores<br>that where you step, you leave<br>A <span class='highlight-word'>blossom</span> of bright light,<br><span class='guide-note'>[Gently]</span> that where you have placed<br>your <span class='highlight-word'>bleeding</span> little soles<br>a red <span class='highlight-word'>tuberose</span> grows.",
-                        mood: "mood-light" 
-                    },
-                    { 
-                        text: "Since, however, you go through<br>the streets so straight,<br>you are <span class='highlight-word'>courageous</span>, faultless.", 
-                        guide: "<span class='guide-note'>[With admiration]</span> Since, however, you go through<br>the streets so <span class='stress-mark'>straight</span>,<br>you are <span class='highlight-word'>courageous</span>, faultless.",
-                        mood: "mood-void" 
-                    },
-                    { 
-                        text: "Tiny feet of children,<br>Two tiny <span class='highlight-word'>suffering</span> gems,<br>How can the people pass you by<br>and not <span class='highlight-word'>see</span> you?", 
-                        guide: "<span class='guide-note'>[Slowly, fading]</span> Tiny feet of children,<br>Two tiny <span class='highlight-word'>suffering</span> gems,<br><span class='guide-note'>[Desperate whisper]</span> How can the people pass you by<br>and not <span class='highlight-word stress-mark'>see</span> you?",
-                        mood: "mood-ice" 
-                    }
+                    { text: "Tiny feet of children,<br>Blue with <span class='highlight-word'>cold</span>,<br>How can they see you and not <span class='highlight-word'>cover</span> you?<br>Oh, God!", guide: "<span class='guide-note'>[Softly, with pity]</span> Tiny feet of children,<br><span class='stress-mark'>Blue</span> with <span class='highlight-word stress-mark'>cold</span> <span class='intonation-down'>↓</span>,<br><span class='guide-note'>[Rising intonation]</span> How can they <span class='stress-mark'>see</span> you and not <span class='highlight-word'>cover</span> you? <span class='intonation-up'>↑</span><br><span class='guide-note'>[Pause]</span> Oh, God!", mood: "mood-ice" },
+                    { text: "Tiny <span class='highlight-word'>wounded</span> feet,<br>Bruised all over by <span class='highlight-word'>pebbles</span>,<br>Abused by <span class='highlight-word'>snow</span> and soil!", guide: "<span class='guide-note'>[Anguished]</span> Tiny <span class='highlight-word'>wounded</span> feet <span class='intonation-down'>↓</span>,<br>Bruised all over by <span class='highlight-word stress-mark'>pebbles</span>,<br><span class='guide-note'>[Sharp]</span> Abused by <span class='highlight-word'>snow</span> and soil! <span class='intonation-down'>↓</span>", mood: "mood-pain" },
+                    { text: "Man, being blind, ignores<br>that where you step, you leave<br>A <span class='highlight-word'>blossom</span> of bright light,<br>that where you have placed<br>your <span class='highlight-word'>bleeding</span> little soles<br>a red <span class='highlight-word'>tuberose</span> grows.", guide: "<span class='guide-note'>[Firmly]</span> Man, being <span class='stress-mark'>blind</span> <span class='intonation-down'>↓</span>, ignores<br>that where you step, you leave<br>A <span class='highlight-word'>blossom</span> of bright light <span class='intonation-up'>↑</span>,<br><span class='guide-note'>[Gently]</span> that where you have placed<br>your <span class='highlight-word'>bleeding</span> little soles<br>a red <span class='highlight-word'>tuberose</span> grows <span class='intonation-down'>↓</span>.", mood: "mood-light" },
+                    { text: "Since, however, you go through<br>the streets so straight,<br>you are <span class='highlight-word'>courageous</span>, faultless.", guide: "<span class='guide-note'>[With admiration]</span> Since, however, you go through<br>the streets so <span class='stress-mark'>straight</span> <span class='intonation-up'>↑</span>,<br>you are <span class='highlight-word'>courageous</span>, faultless <span class='intonation-down'>↓</span>.", mood: "mood-void" },
+                    { text: "Tiny feet of children,<br>Two tiny <span class='highlight-word'>suffering</span> gems,<br>How can the people pass you by<br>and not <span class='highlight-word'>see</span> you?", guide: "<span class='guide-note'>[Slowly, fading]</span> Tiny feet of children,<br>Two tiny <span class='highlight-word'>suffering</span> gems <span class='intonation-down'>↓</span>,<br><span class='guide-note'>[Desperate whisper]</span> How can the people pass you by<br>and not <span class='highlight-word stress-mark'>see</span> you? <span class='intonation-up'>↑</span>", mood: "mood-ice" }
                 ],
                 themes: ["Suffering", "Innocence", "Social Neglect", "Compassion"],
-                analysis: "Mistral uses the synecdoche of 'feet' to represent the vulnerable and impoverished children of society.",
+                analysis: "Mistral uses the literary device of synecdoche, focusing entirely on the 'feet' to represent the vulnerable child. This evokes a strong physical reaction from the reader—the image of bare feet on cold snow is visceral. By transforming the blood into 'tuberoses' (flowers), she elevates the suffering of the poor to a sacred, almost martyr-like status, criticizing society's 'blindness' to poverty.",
                 history: {
-                    social: "Written during a time of immense rural poverty in Latin America. Child mortality rates were high.",
-                    political: "The early 20th century in Chile saw a rigid class structure. Mistral's work gave a voice to the marginalized.",
-                    literary: "Gabriela Mistral moved away from the ornate Modernismo style towards a simpler, more direct language."
-                }
+                    social: "Written during a period of intense rural poverty in Chile and Latin America post-WWI. Child mortality was high, and many children lacked basic shoes and clothing.",
+                    political: "The early 20th century in Chile saw a rigid class structure where the plight of the rural poor was often invisible to the urban elite. Mistral used her poetry as a political tool to demand social justice.",
+                    literary: "Gabriela Mistral moved away from the ornate, artificial style of 'Modernismo' prevalent at the time, opting instead for a simpler, more direct language that dealt with harsh realities and maternal sorrow."
+                },
+                quiz: [
+                    { 
+                        q: "What literary device is used when Mistral refers to children as 'tiny feet'?", 
+                        options: ["Metaphor", "Synecdoche", "Simile"], 
+                        answer: 1, 
+                        explanation: "Correct! Synecdoche is when a part represents the whole. By focusing only on the feet, Mistral emphasizes their vulnerability and contact with the harsh earth." 
+                    },
+                    { 
+                        q: "The 'red tuberose' growing from bleeding soles symbolizes what?", 
+                        options: ["Violence", "Sacred Suffering", "Nature's Anger"], 
+                        answer: 1, 
+                        explanation: "Correct! Mistral transforms the physical suffering (blood) into something beautiful and sacred (a flower/tuberose), suggesting the child is a holy martyr of poverty." 
+                    },
+                    {
+                        q: "The phrase 'Man, being blind' refers to:",
+                        options: ["Physical blindness", "Society's indifference", "The darkness of night"],
+                        answer: 1,
+                        explanation: "Correct! It criticizes society's willful ignorance to the plight of the poor, seeing the child but ignoring their suffering."
+                    },
+                    {
+                        q: "What region of Chile was Gabriela Mistral from?",
+                        options: ["The capital, Santiago", "The Elqui Valley", "The coastal city of Valparaiso"],
+                        answer: 1,
+                        explanation: "Correct! She rose from a humble background in the rural Elqui Valley, which deeply influenced her focus on nature and rural poverty."
+                    }
+                ]
             },
             laughter: {
                 title: "Your Laughter",
@@ -424,35 +505,46 @@
                 author: "Pablo Neruda",
                 year: "1952",
                 origin: "Chile (Written in Exile)",
+                bio: "Pablo Neruda (1904-1973) was a Chilean poet and politician, and the 1971 Nobel Prize laureate. Known for his passionate love poems as well as his surrealist and political writing, he served as a senator for the Chilean Communist Party. His life was marked by political exile, during which he wrote some of his most famous elemental odes.",
                 stanzas: [
-                    { 
-                        text: "Take bread away from me, if you wish,<br>take air away, but<br>do not take from me your <span class='highlight-word'>laughter</span>.", 
-                        guide: "<span class='guide-note'>[Boldly]</span> Take bread away from me, if you wish,<br>take air away, but<br><span class='guide-note'>[Tenderly]</span> do not take from me your <span class='highlight-word stress-mark'>laughter</span>.",
-                        mood: "mood-deprivation" 
-                    },
-                    { 
-                        text: "Do not take away the rose,<br>the lance flower that you pluck,<br>the water that suddenly<br>bursts in your <span class='highlight-word'>joy</span>,<br>the sudden wave of <span class='highlight-word'>silver</span><br>born in you.", 
-                        guide: "Do not take away the <span class='stress-mark'>rose</span>,<br>the lance flower that you pluck,<br><span class='guide-note'>[Rapidly]</span> the water that suddenly<br>bursts in your <span class='highlight-word'>joy</span>,<br>the sudden wave of <span class='highlight-word'>silver</span><br>born in you.",
-                        mood: "mood-silver" 
-                    },
-                    { 
-                        text: "My struggle is <span class='highlight-word'>harsh</span> and I come back<br>with eyes tired<br>at times from seeing<br>the earth that does not change,<br>but when your laughter enters<br>it rises to the sky seeking me<br>and it opens for me all<br>the doors of <span class='highlight-word'>life</span>.", 
-                        guide: "<span class='guide-note'>[Weary tone]</span> My struggle is <span class='highlight-word'>harsh</span> and I come back<br>with eyes tired...<br><span class='guide-note'>[Hopeful shift]</span> but when your laughter enters<br>it rises to the sky seeking me<br>and it opens for me all<br>the doors of <span class='highlight-word stress-mark'>life</span>.",
-                        mood: "mood-light" 
-                    },
-                    { 
-                        text: "Laugh at the night,<br>at the day, at the moon,<br>laugh at the twisted<br>streets of the island,<br>laugh at this clumsy<br>boy who <span class='highlight-word'>loves</span> you,<br>but when I open my eyes and close them,<br>when my steps go,<br>when my steps return,<br>deny me bread, air,<br>light, spring,<br>but never your <span class='highlight-word'>laughter</span><br>for I would <span class='highlight-word'>die</span>.", 
-                        guide: "<span class='guide-note'>[Joyfully]</span> Laugh at the night,<br>at the day, at the moon...<br><span class='guide-note'>[Slow down, serious]</span> but never your <span class='highlight-word'>laughter</span><br><span class='guide-note'>[Whisper]</span> for I would <span class='highlight-word stress-mark'>die</span>.",
-                        mood: "mood-love" 
-                    }
+                    { text: "Take bread away from me, if you wish,<br>take air away, but<br>do not take from me your <span class='highlight-word'>laughter</span>.", guide: "<span class='guide-note'>[Boldly]</span> Take bread away from me, if you wish,<br>take air away, but<br><span class='guide-note'>[Tenderly]</span> do not take from me your <span class='highlight-word stress-mark'>laughter</span> <span class='intonation-down'>↓</span>.", mood: "mood-deprivation" },
+                    { text: "Do not take away the rose,<br>the lance flower that you pluck,<br>the water that suddenly<br>bursts in your <span class='highlight-word'>joy</span>,<br>the sudden wave of <span class='highlight-word'>silver</span><br>born in you.", guide: "Do not take away the <span class='stress-mark'>rose</span> <span class='intonation-up'>↑</span>,<br>the lance flower that you pluck,<br><span class='guide-note'>[Rapidly]</span> the water that suddenly<br>bursts in your <span class='highlight-word'>joy</span>,<br>the sudden wave of <span class='highlight-word'>silver</span><br>born in you <span class='intonation-down'>↓</span>.", mood: "mood-silver" },
+                    { text: "My struggle is <span class='highlight-word'>harsh</span> and I come back<br>with eyes tired<br>at times from seeing<br>the earth that does not change,<br>but when your laughter enters<br>it rises to the sky seeking me<br>and it opens for me all<br>the doors of <span class='highlight-word'>life</span>.", guide: "<span class='guide-note'>[Weary tone]</span> My struggle is <span class='highlight-word'>harsh</span> and I come back<br>with eyes tired... <span class='intonation-down'>↓</span><br><span class='guide-note'>[Hopeful shift]</span> but when your laughter enters<br>it rises to the sky seeking me<br>and it opens for me all<br>the doors of <span class='highlight-word stress-mark'>life</span> <span class='intonation-up'>↑</span>.", mood: "mood-light" },
+                    { text: "Laugh at the night,<br>at the day, at the moon,<br>laugh at the twisted<br>streets of the island,<br>laugh at this clumsy<br>boy who <span class='highlight-word'>loves</span> you,<br>but when I open my eyes and close them,<br>when my steps go,<br>when my steps return,<br>deny me bread, air,<br>light, spring,<br>but never your <span class='highlight-word'>laughter</span><br>for I would <span class='highlight-word'>die</span>.", guide: "<span class='guide-note'>[Joyfully]</span> Laugh at the night,<br>at the day, at the moon... <span class='intonation-up'>↑</span><br><span class='guide-note'>[Slow down, serious]</span> but never your <span class='highlight-word'>laughter</span> <span class='intonation-down'>↓</span><br><span class='guide-note'>[Whisper]</span> for I would <span class='highlight-word stress-mark'>die</span>.", mood: "mood-love" }
                 ],
                 themes: ["Love", "Resilience", "Hope", "Vitality"],
-                analysis: "Neruda portrays laughter not just as an expression of happiness, but as a life-sustaining force essential for survival amidst struggle.",
+                analysis: "This poem is an 'Elemental Ode' where Neruda elevates a simple human action—laughter—to the status of a life-sustaining element like bread, air, or water. By stating he would 'die' without it, he moves beyond romantic hyperbole to suggest that joy and human connection are essential for political and personal survival in harsh times.",
                 history: {
-                    social: "Dedicated to Matilde Urrutia, Neruda's secret lover at the time.",
-                    political: "Written while Neruda was in exile in Capri, Italy, due to his Communist party affiliation.",
-                    literary: "Part of 'The Captain's Verses'. Intimate, elemental love poetry."
-                }
+                    social: "The poem is dedicated to Matilde Urrutia, Neruda's secret lover at the time. Their relationship was hidden because Neruda was still married, adding a layer of intensity and refuge to the poem.",
+                    political: "Written while Neruda was in exile in Capri, Italy (1952), fleeing persecution for his Communist beliefs under the presidency of Gabriel González Videla. The 'harsh struggle' mentioned is his political fight.",
+                    literary: "Part of 'The Captain's Verses' (Los versos del capitán). This marked a stylistic shift from his epic, complex political poetry (Canto General) back to intimate, elemental, and accessible love poetry."
+                },
+                quiz: [
+                    { 
+                        q: "Neruda compares laughter to 'bread' and 'air'. What does this imply?", 
+                        options: ["It is common", "It is a basic necessity for survival", "It is expensive"], 
+                        answer: 1, 
+                        explanation: "Correct! By comparing laughter to bread (sustenance) and air (breath), he elevates love to a biological necessity, not just an emotion." 
+                    },
+                    { 
+                        q: "The 'twisted streets of the island' refers to which location of his exile?", 
+                        options: ["Santiago", "Capri", "Madrid"], 
+                        answer: 1, 
+                        explanation: "Correct! Neruda was in exile in Capri, Italy. The physical twisting streets mirror his own complicated political and personal situation." 
+                    },
+                    {
+                        q: "Why does the speaker say his 'struggle is harsh'?",
+                        options: ["He is physically ill", "He is politically persecuted", "He hates writing"],
+                        answer: 1,
+                        explanation: "Correct! Neruda was a communist senator forced into hiding and exile. His 'struggle' is the political fight against the Chilean government of the time."
+                    },
+                    {
+                        q: "To whom is this poem secretly dedicated?",
+                        options: ["His wife Delia", "Matilde Urrutia", "Gabriela Mistral"],
+                        answer: 1,
+                        explanation: "Correct! It was written for Matilde Urrutia, his lover while he was in exile, representing his private refuge from public chaos."
+                    }
+                ]
             }
         };
 
@@ -462,50 +554,159 @@
         let isContextMode = false;
         let isJourneyMode = false;
         let isReadAlongMode = false;
+        let userName = "Traveler"; // Default
+        
+        // SCORE STATE
+        let engagementScore = 0;
+        let currentQuizIndex = 0;
+        let shuffledQuiz = [];
+        
+        // TIMER STATE
+        let readingTimer = null;
+        let secondsRead = 0;
 
-        // 2. MODAL LOGIC
-        window.onload = function() {
-            if(!sessionStorage.getItem('introShown')) {
-                document.getElementById('intro-modal').classList.add('modal-open');
-                const content = document.querySelector('#intro-modal .glass-panel');
-                content.classList.remove('scale-95'); content.classList.add('scale-100');
-            }
-        }
-
-        function closeIntro() {
-            const modal = document.getElementById('intro-modal');
-            modal.classList.remove('modal-open');
-            sessionStorage.setItem('introShown', 'true');
-            // DEFAULT TO TINY FEET
-            changePoem('tinyfeet');
-        }
-
-        function toggleAbout() {
-            const modal = document.getElementById('about-modal');
-            const content = modal.querySelector('div.glass-panel');
-            if (modal.classList.contains('modal-open')) {
-                modal.classList.remove('modal-open');
-                content.classList.remove('scale-100'); content.classList.add('scale-95');
+        // 2. HELPER FUNCTIONS (Moved up to prevent Hoisting Issues)
+        function updateButtonStyles() {
+            const btnTiny = document.getElementById('btn-tinyfeet');
+            const btnLaugh = document.getElementById('btn-laughter');
+            
+            if(currentPoem === 'tinyfeet') {
+                btnTiny.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 bg-blue-100 dark:bg-blue-900 shadow-sm text-blue-900 dark:text-blue-100 font-bold transform scale-105 border border-blue-200 dark:border-blue-700";
+                btnLaugh.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 hover:bg-white/50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400";
             } else {
-                modal.classList.add('modal-open');
-                content.classList.remove('scale-95'); content.classList.add('scale-100');
+                btnLaugh.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 bg-rose-100 dark:bg-rose-900 shadow-sm text-rose-900 dark:text-rose-100 font-bold transform scale-105 border border-rose-200 dark:border-rose-700";
+                btnTiny.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 hover:bg-white/50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-400";
             }
         }
 
-        function closeReadTutorial() {
-            const modal = document.getElementById('read-tutorial-modal');
-            const content = modal.querySelector('div.glass-panel');
-            modal.classList.remove('modal-open');
-            content.classList.remove('scale-100'); content.classList.add('scale-95');
+        function updateToggleUI(idPrefix, isActive, activeClass) {
+            const indicator = document.getElementById(idPrefix + '-indicator');
+            if (isActive) {
+                indicator.classList.remove('bg-slate-300', 'dark:bg-slate-600');
+                indicator.classList.add(activeClass.replace('bg-', 'bg-'), 'dark:' + activeClass); 
+                indicator.className = `w-3 h-3 rounded-full transition-colors duration-300 ${activeClass} dark:${activeClass.replace('700', '400')}`;
+            } else {
+                indicator.className = 'w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300';
+            }
         }
 
-        // 3. RENDER LOGIC
+        function updateBackground(moodClass) {
+            const body = document.getElementById('main-body');
+            body.className = `min-h-screen text-slate-900 dark:text-slate-200 overflow-x-hidden selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-800 dark:selection:text-indigo-200 ${moodClass} pt-10`;
+        }
+
+        function toggleTheme() {
+            const body = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                icon.classList.remove('fa-sun'); icon.classList.add('fa-moon');
+            } else {
+                body.classList.add('dark');
+                icon.classList.remove('fa-moon'); icon.classList.add('fa-sun');
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function updateScore(points, animate = false) {
+            if(engagementScore >= 100) return;
+            engagementScore += points;
+            if(engagementScore > 100) engagementScore = 100;
+            
+            const meter = document.getElementById('engagement-meter');
+            const display = document.getElementById('score-display');
+            
+            meter.style.width = engagementScore + '%';
+            display.innerText = engagementScore;
+
+            if(animate) {
+                const anchor = document.getElementById('point-animation-anchor');
+                const pop = document.createElement('div');
+                pop.classList.add('point-pop');
+                pop.innerText = `+${points} XP`;
+                const randomLeft = Math.random() * 40 - 20;
+                pop.style.transform = `translateX(${randomLeft}px)`;
+                anchor.appendChild(pop);
+                
+                setTimeout(() => pop.remove(), 1500);
+            }
+
+            if(engagementScore === 100) {
+                meter.classList.remove('from-indigo-500', 'via-purple-500', 'to-pink-500');
+                meter.classList.add('bg-amber-400', 'animate-pulse');
+                document.getElementById('score-display').innerText = "MAX";
+            }
+        }
+
+        function startReadingTimer() {
+            if (readingTimer) clearInterval(readingTimer);
+            readingTimer = setInterval(() => {
+                secondsRead++;
+                const mins = Math.floor(secondsRead / 60).toString().padStart(2, '0');
+                const secs = (secondsRead % 60).toString().padStart(2, '0');
+                document.getElementById('reading-timer').innerText = `${mins}:${secs}`;
+                
+                if (secondsRead % 30 === 0) {
+                    updateScore(1, true);
+                }
+            }, 1000);
+        }
+
+        // 3. ANIMATION FUNCTION
+        function generateAnimation(type, mood) {
+            const container = document.getElementById('anim-layer');
+            container.innerHTML = ''; 
+            const count = 12; 
+
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('i');
+                el.classList.add('anim-icon', 'fas');
+                
+                let speedFactor = 1.0;
+                if(mood === 'mood-pain' || mood === 'mood-ice') speedFactor = 1.5; 
+                if(mood === 'mood-light') speedFactor = 0.8; 
+
+                if (type === 'feet') {
+                    el.classList.add('fa-shoe-prints', 'anim-footprint');
+                    
+                    const progress = i / count; 
+                    const pathCenter = 20 + (progress * 60); 
+                    const curve = Math.sin(progress * Math.PI) * 10; 
+                    const isLeftFoot = i % 2 === 0;
+                    const stepWidth = 4; 
+                    const x = pathCenter + curve + (isLeftFoot ? -stepWidth : stepWidth);
+                    const baseRotation = isLeftFoot ? -15 : 15;
+                    const pathRotation = 45; 
+                    
+                    el.style.left = `${x}%`;
+                    el.style.bottom = `${progress * 90}%`;
+                    el.style.transform = `rotate(${pathRotation + baseRotation}deg)`;
+                    el.style.animationDelay = `${(i * 0.8) * speedFactor}s`;
+                    el.style.animationDuration = `${8 * speedFactor}s`;
+                    
+                } else {
+                    el.classList.add(Math.random() > 0.5 ? 'fa-sun' : 'fa-star', 'anim-sparkle');
+                    el.style.left = (Math.random() * 90) + '%';
+                    el.style.animationDelay = (Math.random() * 5) + 's';
+                    el.style.fontSize = (1 + Math.random()) + 'rem';
+                }
+                container.appendChild(el);
+            }
+        }
+
+        // 4. CORE LOGIC
         function changePoem(poemKey) {
             currentPoem = poemKey;
             journeyIndex = 0;
             loadPoem();
             updateButtonStyles();
-            // Pass the first mood to generateAnimation for correct speed/style
             const firstMood = poetryDB[poemKey].stanzas[0].mood;
             generateAnimation(poemKey === 'tinyfeet' ? 'feet' : 'laughter', firstMood);
         }
@@ -537,7 +738,6 @@
                     updateBackground(stanza.mood);
                     journeyControls.classList.remove('hidden');
                     renderJourneyDots(data.stanzas.length);
-                    // Update animation based on new mood (walking speed/style)
                     if(currentPoem === 'tinyfeet') generateAnimation('feet', stanza.mood);
                     
                 } else {
@@ -549,7 +749,6 @@
                     html += `</div>`;
                     updateBackground('ambient-default');
                     journeyControls.classList.add('hidden');
-                    // Reset animation to default for poem type
                     generateAnimation(currentPoem === 'tinyfeet' ? 'feet' : 'laughter');
                 }
 
@@ -562,6 +761,7 @@
                         <div><p class="text-slate-600 dark:text-slate-400 text-xs font-medium">Origin</p><p class="font-bold text-slate-900 dark:text-slate-200">${data.origin}</p></div>
                     </div>`;
                 
+                document.getElementById('bio-area').innerText = data.bio;
                 document.getElementById('analysis-area').innerText = data.analysis;
                 document.getElementById('mood-area').innerHTML = data.themes.map(theme => 
                     `<span class="px-3 py-1 bg-white/60 dark:bg-slate-700/50 rounded-md text-xs font-bold uppercase tracking-wider text-indigo-900 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-900 shadow-sm">${theme}</span>`
@@ -581,6 +781,7 @@
             const maxIndex = poetryDB[currentPoem].stanzas.length - 1;
             if (journeyIndex < maxIndex) journeyIndex++;
             else journeyIndex = 0;
+            updateScore(1, true); 
             loadPoem();
         }
 
@@ -594,16 +795,12 @@
             container.innerHTML = dotsHtml;
         }
 
-        function updateBackground(moodClass) {
-            const body = document.getElementById('main-body');
-            body.className = `min-h-screen text-slate-900 dark:text-slate-200 overflow-x-hidden selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-800 dark:selection:text-indigo-200 ${moodClass}`;
-        }
-
-        // 4. TOGGLES
+        // 5. UI INTERACTION
         function toggleJourney() {
             isJourneyMode = !isJourneyMode;
             journeyIndex = 0;
             updateToggleUI('journey', isJourneyMode, 'bg-purple-700');
+            updateScore(1, true); 
             loadPoem();
         }
 
@@ -611,7 +808,6 @@
             isReadAlongMode = !isReadAlongMode;
             updateToggleUI('read', isReadAlongMode, 'bg-pink-700');
             
-            // SHOW TUTORIAL ONCE
             if(isReadAlongMode && !sessionStorage.getItem('readTutorialShown')) {
                 sessionStorage.setItem('readTutorialShown', 'true');
                 const modal = document.getElementById('read-tutorial-modal');
@@ -619,13 +815,14 @@
                 modal.classList.add('modal-open');
                 content.classList.remove('scale-95'); content.classList.add('scale-100');
             }
-            
+            updateScore(1, true); 
             loadPoem();
         }
 
         function toggleResonance() {
             isResonanceMode = !isResonanceMode;
             updateToggleUI('resonance', isResonanceMode, 'bg-indigo-700');
+            updateScore(1, true); 
             loadPoem(); 
         }
 
@@ -637,100 +834,143 @@
             if (isContextMode) {
                 viewAnalysis.style.opacity = '0'; viewAnalysis.style.transform = 'translateX(-20px)'; viewAnalysis.style.pointerEvents = 'none';
                 viewContext.style.opacity = '1'; viewContext.style.transform = 'translateX(0)'; viewContext.style.pointerEvents = 'auto';
+                updateScore(1, true); 
             } else {
                 viewAnalysis.style.opacity = '1'; viewAnalysis.style.transform = 'translateX(0)'; viewAnalysis.style.pointerEvents = 'auto';
                 viewContext.style.opacity = '0'; viewContext.style.transform = 'translateX(10px)'; viewContext.style.pointerEvents = 'none';
             }
         }
 
-        function updateToggleUI(idPrefix, isActive, activeClass) {
-            const indicator = document.getElementById(idPrefix + '-indicator');
-            if (isActive) {
-                indicator.classList.remove('bg-slate-300', 'dark:bg-slate-600');
-                indicator.classList.add(activeClass.replace('bg-', 'bg-'), 'dark:' + activeClass); 
-                indicator.className = `w-3 h-3 rounded-full transition-colors duration-300 ${activeClass} dark:${activeClass.replace('700', '400')}`;
+        function toggleQuiz() {
+            const modal = document.getElementById('quiz-modal');
+            const content = modal.querySelector('.glass-panel');
+            
+            if (modal.classList.contains('modal-open')) {
+                modal.classList.remove('modal-open');
+                content.classList.remove('scale-100'); content.classList.add('scale-95');
             } else {
-                indicator.className = 'w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300';
-            }
-        }
-
-        function updateButtonStyles() {
-            const btnTiny = document.getElementById('btn-tinyfeet');
-            const btnLaugh = document.getElementById('btn-laughter');
-            if(currentPoem === 'tinyfeet') {
-                btnTiny.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 bg-white dark:bg-slate-700 shadow-sm text-indigo-900 dark:text-white font-medium transform scale-105";
-                btnLaugh.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 hover:bg-white/50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-400";
-            } else {
-                btnLaugh.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 bg-white dark:bg-slate-700 shadow-sm text-indigo-900 dark:text-white font-medium transform scale-105";
-                btnTiny.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 hover:bg-white/50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-400";
-            }
-        }
-
-        function toggleTheme() {
-            const body = document.documentElement;
-            const icon = document.getElementById('theme-icon');
-            if (body.classList.contains('dark')) {
-                body.classList.remove('dark');
-                icon.classList.remove('fa-sun'); icon.classList.add('fa-moon');
-            } else {
-                body.classList.add('dark');
-                icon.classList.remove('fa-moon'); icon.classList.add('fa-sun');
-            }
-        }
-
-        // 5. TRAIL ANIMATION LOGIC
-        function generateAnimation(type, mood) {
-            const container = document.getElementById('anim-layer');
-            container.innerHTML = ''; 
-            const count = 12; // Number of items
-
-            for (let i = 0; i < count; i++) {
-                const el = document.createElement('i');
-                el.classList.add('anim-icon', 'fas');
+                modal.classList.add('modal-open');
+                content.classList.remove('scale-95'); content.classList.add('scale-100');
                 
-                // Base speed calc
-                let speedFactor = 1.0;
-                if(mood === 'mood-pain' || mood === 'mood-ice') speedFactor = 1.5; // Slower/Heavier
-                if(mood === 'mood-light') speedFactor = 0.8; // Faster/Lighter
-
-                if (type === 'feet') {
-                    el.classList.add('fa-shoe-prints', 'anim-footprint');
-                    
-                    // --- REALISTIC TRAIL LOGIC ---
-                    const progress = i / count; 
-                    
-                    // Curve Logic (Sine wave path from left to right-ish)
-                    const pathCenter = 20 + (progress * 60); // Moves from 20% left to 80% right
-                    const curve = Math.sin(progress * Math.PI) * 10; // Adds a gentle arc
-                    
-                    // Stagger: Left foot is Left of center, Right foot is Right of center
-                    const isLeftFoot = i % 2 === 0;
-                    const stepWidth = 4; // Width between feet
-                    const x = pathCenter + curve + (isLeftFoot ? -stepWidth : stepWidth);
-                    
-                    // Rotation: Left foot angles left (-15deg), Right foot angles right (15deg)
-                    // Add progress rotation to follow the curve
-                    const baseRotation = isLeftFoot ? -15 : 15;
-                    const pathRotation = 45; // General diagonal direction
-                    
-                    el.style.left = `${x}%`;
-                    el.style.bottom = `${progress * 90}%`;
-                    el.style.transform = `rotate(${pathRotation + baseRotation}deg)`;
-                    
-                    // Sequential timing
-                    el.style.animationDelay = `${(i * 0.8) * speedFactor}s`;
-                    el.style.animationDuration = `${8 * speedFactor}s`;
-                    
-                } else {
-                    // Sparkles (Laughter)
-                    el.classList.add(Math.random() > 0.5 ? 'fa-sun' : 'fa-star', 'anim-sparkle');
-                    el.style.left = (Math.random() * 90) + '%';
-                    el.style.animationDelay = (Math.random() * 5) + 's';
-                    el.style.fontSize = (1 + Math.random()) + 'rem';
-                }
-                
-                container.appendChild(el);
+                currentQuizIndex = 0;
+                shuffledQuiz = shuffleArray([...poetryDB[currentPoem].quiz]);
+                renderQuizCard();
+                updateProgressBar();
             }
+        }
+
+        function renderQuizCard() {
+            const container = document.getElementById('quiz-card-container');
+            const qData = shuffledQuiz[currentQuizIndex];
+            const total = shuffledQuiz.length;
+            
+            document.getElementById('quiz-counter').innerText = `Card ${currentQuizIndex + 1} of ${total}`;
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            let optionsHtml = '';
+            qData.options.forEach((opt, i) => {
+                optionsHtml += `<button onclick="checkAnswer(${i}, this)" class="w-full text-left px-4 py-3 rounded-xl bg-white/50 dark:bg-white/10 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors text-sm text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 focus:outline-none mb-2 font-medium">${opt}</button>`;
+            });
+
+            container.innerHTML = `
+                <div class="w-full bg-white/40 dark:bg-black/30 p-6 rounded-2xl text-left shadow-sm animate-[fadeIn_0.5s_ease-out]">
+                    <p class="font-bold text-slate-800 dark:text-slate-100 mb-6 text-lg">${qData.q}</p>
+                    <div id="options-container" class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div id="card-feedback" class="mt-4 text-sm hidden p-4 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 border border-indigo-100 dark:border-indigo-800"></div>
+                </div>
+            `;
+        }
+
+        function checkAnswer(optIndex, btnElement) {
+            const qData = shuffledQuiz[currentQuizIndex];
+            const feedbackEl = document.getElementById('card-feedback');
+            const nextBtn = document.getElementById('quiz-next-btn');
+            
+            const buttons = document.querySelectorAll('#options-container button');
+            buttons.forEach(b => b.disabled = true);
+
+            if(optIndex === qData.answer) {
+                btnElement.classList.add('bg-emerald-200', 'dark:bg-emerald-800', 'border-emerald-500', 'text-emerald-900');
+                btnElement.classList.remove('bg-white/50', 'dark:bg-white/10');
+                feedbackEl.innerHTML = `<i class="fas fa-check-circle mr-2 text-emerald-600"></i><span class="font-bold">Correct!</span> ${qData.explanation}`;
+                feedbackEl.classList.remove('hidden');
+                updateScore(5, true); 
+            } else {
+                btnElement.classList.add('bg-rose-200', 'dark:bg-rose-800', 'border-rose-500', 'text-rose-900');
+                btnElement.classList.remove('bg-white/50', 'dark:bg-white/10');
+                feedbackEl.innerHTML = `<i class="fas fa-times-circle mr-2 text-rose-600"></i><span class="font-bold">Incorrect.</span> The correct answer was: ${qData.options[qData.answer]}. ${qData.explanation}`;
+                feedbackEl.classList.remove('hidden');
+                updateScore(1, true); 
+            }
+
+            if(currentQuizIndex < shuffledQuiz.length - 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                nextBtn.innerHTML = 'Finish <i class="fas fa-flag ml-2"></i>';
+                nextBtn.onclick = toggleQuiz;
+            }
+            updateProgressBar();
+        }
+
+        function nextQuestion() {
+            if(currentQuizIndex < shuffledQuiz.length - 1) {
+                currentQuizIndex++;
+                renderQuizCard();
+                updateProgressBar();
+            }
+        }
+
+        function updateProgressBar() {
+            const bar = document.getElementById('quiz-progress-bar');
+            const percent = ((currentQuizIndex + 1) / shuffledQuiz.length) * 100;
+            bar.style.width = percent + '%';
+        }
+
+        // 2. MODAL & INIT
+        window.onload = function() {
+            if(!sessionStorage.getItem('introShown')) {
+                document.getElementById('intro-modal').classList.add('modal-open');
+                const content = document.querySelector('#intro-modal .glass-panel');
+                content.classList.remove('scale-95'); content.classList.add('scale-100');
+            } else {
+                startReadingTimer();
+            }
+        }
+
+        function closeIntro() {
+            const input = document.getElementById('user-name-input');
+            if(input.value.trim()) {
+                userName = input.value.trim();
+                document.getElementById('welcome-message').innerText = `Welcome, ${userName}`;
+            }
+            
+            const modal = document.getElementById('intro-modal');
+            modal.classList.remove('modal-open');
+            sessionStorage.setItem('introShown', 'true');
+            changePoem('tinyfeet');
+            startReadingTimer();
+        }
+
+        function toggleAbout() {
+            const modal = document.getElementById('about-modal');
+            const content = modal.querySelector('div.glass-panel');
+            if (modal.classList.contains('modal-open')) {
+                modal.classList.remove('modal-open');
+                content.classList.remove('scale-100'); content.classList.add('scale-95');
+            } else {
+                modal.classList.add('modal-open');
+                content.classList.remove('scale-95'); content.classList.add('scale-100');
+            }
+        }
+
+        function closeReadTutorial() {
+            const modal = document.getElementById('read-tutorial-modal');
+            const content = modal.querySelector('div.glass-panel');
+            modal.classList.remove('modal-open');
+            content.classList.remove('scale-100'); content.classList.add('scale-95');
         }
     </script>
 </body>
