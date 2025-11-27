@@ -62,13 +62,13 @@
         .dark .mood-love { background: linear-gradient(to right, #521818 0%, #701c1c 100%); }
 
 
-        /* Glassmorphism Cards */
+        /* Glassmorphism Cards - Increased Opacity for Light Mode */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.65);
+            background: rgba(255, 255, 255, 0.85); /* Increased from 0.65 to 0.85 for readability */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
             transition: all 0.5s ease;
         }
         .dark .glass-panel {
@@ -120,8 +120,8 @@
         
         /* Updated Footprint Trail Animation */
         .anim-footprint {
-            color: #93c5fd; 
-            font-size: 2.5rem; /* Slightly larger for clarity */
+            color: #60a5fa; /* Slightly darker blue for light mode visibility */
+            font-size: 2.5rem; 
             opacity: 0;
             animation: walkTrail 8s forwards;
         }
@@ -149,11 +149,11 @@
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
-<body id="main-body" class="ambient-default min-h-screen text-slate-700 dark:text-slate-200 overflow-x-hidden selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-800 dark:selection:text-indigo-200">
+<body id="main-body" class="ambient-default min-h-screen text-slate-900 dark:text-slate-200 overflow-x-hidden selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-800 dark:selection:text-indigo-200">
 
     <!-- Dynamic Animation Layer -->
     <div id="anim-layer" class="anim-container"></div>
@@ -163,10 +163,10 @@
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md"></div>
         <div class="glass-panel relative z-10 w-full max-w-2xl rounded-2xl p-8 md:p-12 transform scale-95 transition-transform duration-500 shadow-2xl text-center">
             
-            <p class="text-xs uppercase tracking-[0.4em] text-indigo-600 dark:text-indigo-300 mb-4 opacity-80">Welcome to</p>
-            <h1 class="serif-font text-5xl md:text-6xl text-slate-800 dark:text-white mb-6">Whispers of Verse</h1>
+            <p class="text-xs uppercase tracking-[0.4em] text-indigo-800 dark:text-indigo-300 mb-4 opacity-90 font-bold">Welcome to</p>
+            <h1 class="serif-font text-5xl md:text-6xl text-slate-900 dark:text-white mb-6">Whispers of Verse</h1>
             
-            <p class="text-slate-600 dark:text-slate-300 font-light text-lg leading-relaxed mb-8">
+            <p class="text-slate-700 dark:text-slate-300 font-light text-lg leading-relaxed mb-8">
                 An interactive literary journey exploring the profound themes of 
                 <span class="font-medium text-indigo-700 dark:text-indigo-300">compassion</span> 
                 in Gabriela Mistral's work and 
@@ -174,9 +174,9 @@
                 in Pablo Neruda's poetry.
             </p>
 
-            <div class="mb-10 p-6 bg-white/40 dark:bg-black/20 rounded-xl">
-                <p class="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4">Curated By</p>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-medium text-slate-700 dark:text-slate-200 mb-6">
+            <div class="mb-10 p-6 bg-white/60 dark:bg-black/20 rounded-xl">
+                <p class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-semibold">Curated By</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-medium text-slate-800 dark:text-slate-200 mb-6">
                     <div>Mark June Almojuela</div>
                     <div>Kenneth Belardo</div>
                     <div>Mark Nelson Delavin</div>
@@ -184,15 +184,15 @@
                 </div>
                 
                 <!-- Added CTA Message -->
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3 italic border-t border-slate-200 dark:border-slate-700 pt-4">To submit your literary piece, contact us:</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mb-3 italic border-t border-slate-300 dark:border-slate-700 pt-4 font-medium">To submit your literary piece, contact us:</p>
                 
                 <div class="flex justify-center gap-6">
-                    <a href="#" class="text-slate-400 hover:text-blue-600 transition-colors text-2xl"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-slate-400 hover:text-blue-500 transition-colors text-2xl"><i class="fab fa-facebook-messenger"></i></a>
+                    <a href="#" class="text-slate-500 hover:text-blue-700 transition-colors text-2xl"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-slate-500 hover:text-blue-600 transition-colors text-2xl"><i class="fab fa-facebook-messenger"></i></a>
                 </div>
             </div>
 
-            <button onclick="closeIntro()" class="group relative inline-flex items-center justify-center px-8 py-3 text-sm font-medium text-white transition-all duration-200 bg-indigo-600 rounded-full hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <button onclick="closeIntro()" class="group relative inline-flex items-center justify-center px-8 py-3 text-sm font-medium text-white transition-all duration-200 bg-indigo-700 rounded-full hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <span>Let the journey begin</span>
                 <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
             </button>
@@ -204,8 +204,8 @@
         <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="closeReadTutorial()"></div>
         <div class="glass-panel relative z-10 w-full max-w-md rounded-2xl p-8 transform scale-95 transition-transform duration-300">
             <div class="text-center mb-6">
-                <h3 class="serif-font text-2xl text-slate-800 dark:text-white mb-2">How to Read Along</h3>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Master the rhythm and emotion of the verse.</p>
+                <h3 class="serif-font text-2xl text-slate-900 dark:text-white mb-2">How to Read Along</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400">Master the rhythm and emotion of the verse.</p>
             </div>
             
             <div class="space-y-6 mb-8">
@@ -214,8 +214,8 @@
                         <i class="fas fa-music"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-slate-700 dark:text-slate-200 mb-1">Performance Notes</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Pink text like <span class="text-pink-500 text-xs font-bold">[SOFTLY]</span> indicates emotion, volume, or speed.</p>
+                        <p class="font-medium text-slate-800 dark:text-slate-200 mb-1">Performance Notes</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Pink text like <span class="text-pink-600 dark:text-pink-500 text-xs font-bold">[SOFTLY]</span> indicates emotion, volume, or speed.</p>
                     </div>
                 </div>
                 
@@ -224,8 +224,8 @@
                         <i class="fas fa-bolt"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-slate-700 dark:text-slate-200 mb-1">Stress & Emphasis</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Words with a <span class="border-b-2 border-amber-500 font-bold">Gold Underline</span> should be spoken with weight and emphasis.</p>
+                        <p class="font-medium text-slate-800 dark:text-slate-200 mb-1">Stress & Emphasis</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Words with a <span class="border-b-2 border-amber-500 font-bold">Gold Underline</span> should be spoken with weight and emphasis.</p>
                     </div>
                 </div>
 
@@ -234,13 +234,13 @@
                         <i class="fas fa-clock"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-slate-700 dark:text-slate-200 mb-1">Rhythm & Meter</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Follow the line breaks and punctuation. Commas are short breaths; periods are full stops.</p>
+                        <p class="font-medium text-slate-800 dark:text-slate-200 mb-1">Rhythm & Meter</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Follow the line breaks and punctuation. Commas are short breaths; periods are full stops.</p>
                     </div>
                 </div>
             </div>
 
-            <button onclick="closeReadTutorial()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
+            <button onclick="closeReadTutorial()" class="w-full py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-lg text-sm font-medium transition-colors">
                 Got it
             </button>
         </div>
@@ -250,18 +250,18 @@
     <div id="about-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="toggleAbout()"></div>
         <div class="glass-panel relative z-10 w-full max-w-lg rounded-2xl p-8 transform scale-95 transition-transform duration-300">
-            <button onclick="toggleAbout()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+            <button onclick="toggleAbout()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-700 dark:hover:text-white transition-colors">
                 <i class="fas fa-times text-xl"></i>
             </button>
             <div class="text-center mb-8">
-                <p class="text-xs uppercase tracking-[0.3em] text-indigo-900 dark:text-indigo-300 mb-2 opacity-70">The Curators</p>
-                <h2 class="serif-font text-3xl text-slate-800 dark:text-white">Meet the Team</h2>
+                <p class="text-xs uppercase tracking-[0.3em] text-indigo-800 dark:text-indigo-300 mb-2 opacity-90 font-semibold">The Curators</p>
+                <h2 class="serif-font text-3xl text-slate-900 dark:text-white">Meet the Team</h2>
             </div>
             <div class="space-y-4 font-light text-center">
-                <div class="p-3 hover:bg-white/30 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg">MARK JUNE ALMOJUELA</p><p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">Researcher & Content</p></div>
-                <div class="p-3 hover:bg-white/30 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg">KENNETH BELARDO</p><p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">Design Lead</p></div>
-                <div class="p-3 hover:bg-white/30 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg">MARK NELSON DELAVIN</p><p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">Literary Analyst</p></div>
-                <div class="p-3 hover:bg-white/30 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg">PRECIOUS TIBAIJIA</p><p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">Project Manager</p></div>
+                <div class="p-3 hover:bg-white/50 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg text-slate-800 dark:text-slate-100">MARK JUNE ALMOJUELA</p><p class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Researcher & Content</p></div>
+                <div class="p-3 hover:bg-white/50 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg text-slate-800 dark:text-slate-100">KENNETH BELARDO</p><p class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Design Lead</p></div>
+                <div class="p-3 hover:bg-white/50 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg text-slate-800 dark:text-slate-100">MARK NELSON DELAVIN</p><p class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Literary Analyst</p></div>
+                <div class="p-3 hover:bg-white/50 dark:hover:bg-black/20 rounded-lg transition-colors"><p class="font-medium text-lg text-slate-800 dark:text-slate-100">PRECIOUS TIBAIJIA</p><p class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Project Manager</p></div>
             </div>
         </div>
     </div>
@@ -271,8 +271,8 @@
         
         <!-- Header -->
         <header class="text-center mb-10 fade-in flex flex-col items-center">
-            <p class="text-xs uppercase tracking-[0.3em] text-indigo-900 dark:text-indigo-300 mb-3 opacity-70">Literary Archive Project</p>
-            <h1 class="serif-font text-5xl md:text-7xl text-slate-800 dark:text-slate-100 mb-4 tracking-tight">Whispers of Verse</h1>
+            <p class="text-xs uppercase tracking-[0.3em] text-indigo-900 dark:text-indigo-300 mb-3 opacity-90 font-semibold">Literary Archive Project</p>
+            <h1 class="serif-font text-5xl md:text-7xl text-slate-900 dark:text-slate-100 mb-4 tracking-tight">Whispers of Verse</h1>
         </header>
 
         <!-- Control Panel -->
@@ -288,29 +288,29 @@
                 <!-- Journey Mode -->
                 <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer group hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all" onclick="toggleJourney()">
                     <div id="journey-indicator" class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300"></div>
-                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300 group-hover:text-purple-600 dark:group-hover:text-purple-400">Journey</span>
+                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 group-hover:text-purple-700 dark:group-hover:text-purple-400">Journey</span>
                 </div>
 
                 <!-- Read-Along (New) -->
                 <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer group hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all" onclick="toggleReadAlong()">
                     <div id="read-indicator" class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300"></div>
-                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300 group-hover:text-pink-600 dark:group-hover:text-pink-400">Read-Along</span>
+                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 group-hover:text-pink-700 dark:group-hover:text-pink-400">Read-Along</span>
                 </div>
 
                 <!-- Resonance -->
                 <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer group hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all" onclick="toggleResonance()">
                     <div id="resonance-indicator" class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300"></div>
-                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">Resonance</span>
+                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-700 dark:group-hover:text-indigo-400">Resonance</span>
                 </div>
 
                 <!-- Context -->
                 <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer group hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all" onclick="toggleContext()">
                     <div id="context-indicator" class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300"></div>
-                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400">Context</span>
+                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 group-hover:text-emerald-700 dark:group-hover:text-emerald-400">Context</span>
                 </div>
 
                 <!-- Dark Mode -->
-                <button onclick="toggleTheme()" class="glass-panel w-9 h-9 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                <button onclick="toggleTheme()" class="glass-panel w-9 h-9 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 transition-colors">
                     <i id="theme-icon" class="fas fa-moon"></i>
                 </button>
             </div>
@@ -325,8 +325,8 @@
                 <div id="content-area" class="transition-opacity duration-500"></div>
 
                 <!-- Journey Nav -->
-                <div id="journey-controls" class="hidden mt-8 text-center text-slate-400 text-sm">
-                    <p class="journey-nav-hint"><i class="fas fa-hand-pointer mr-2"></i>Click text to continue journey</p>
+                <div id="journey-controls" class="hidden mt-8 text-center text-slate-500 dark:text-slate-400 text-sm">
+                    <p class="journey-nav-hint font-medium"><i class="fas fa-hand-pointer mr-2"></i>Click text to continue journey</p>
                     <div class="mt-4 flex justify-center gap-2" id="journey-dots"></div>
                 </div>
             </section>
@@ -335,33 +335,33 @@
             <aside class="lg:col-span-5 flex flex-col gap-6 relative">
                 <!-- Analysis View -->
                 <div id="view-analysis" class="flex flex-col gap-6 transition-all duration-500 opacity-100 transform translate-x-0">
-                    <div class="glass-panel rounded-2xl p-8 border-l-4 border-indigo-300 dark:border-indigo-600">
-                        <h3 class="text-xs uppercase tracking-widest text-slate-400 mb-4">Database Entry</h3>
+                    <div class="glass-panel rounded-2xl p-8 border-l-4 border-indigo-400 dark:border-indigo-600">
+                        <h3 class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-bold">Database Entry</h3>
                         <div id="metadata-area"></div>
                     </div>
                     <div class="glass-panel rounded-2xl p-8">
-                        <h3 class="text-xs uppercase tracking-widest text-slate-400 mb-4">Literary Analysis</h3>
-                        <div id="analysis-area" class="text-sm leading-relaxed text-slate-600 dark:text-slate-300"></div>
+                        <h3 class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-bold">Literary Analysis</h3>
+                        <div id="analysis-area" class="text-sm leading-relaxed text-slate-800 dark:text-slate-300"></div>
                     </div>
                     <div class="glass-panel rounded-2xl p-8">
-                        <h3 class="text-xs uppercase tracking-widest text-slate-400 mb-4">Emotional Palette</h3>
+                        <h3 class="text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4 font-bold">Emotional Palette</h3>
                         <div id="mood-area" class="flex flex-wrap gap-2"></div>
                     </div>
                 </div>
 
                 <!-- Context View -->
                 <div id="view-context" class="absolute inset-0 flex flex-col gap-4 transition-all duration-500 opacity-0 transform translate-x-10 pointer-events-none">
-                    <div class="glass-panel rounded-2xl p-6 bg-white/80 dark:bg-slate-900/80 border-l-4 border-emerald-400 dark:border-emerald-600 h-full overflow-y-auto">
-                        <div class="flex items-center gap-2 mb-6 text-emerald-700 dark:text-emerald-400">
+                    <div class="glass-panel rounded-2xl p-6 bg-white/90 dark:bg-slate-900/80 border-l-4 border-emerald-500 dark:border-emerald-600 h-full overflow-y-auto">
+                        <div class="flex items-center gap-2 mb-6 text-emerald-800 dark:text-emerald-400">
                             <i class="fas fa-history"></i>
                             <h3 class="text-xs uppercase tracking-widest font-bold">Historical & Social Context</h3>
                         </div>
                         <div class="space-y-6">
-                            <div><h4 class="font-serif text-lg text-slate-800 dark:text-slate-200 mb-2">Social Factors</h4><p id="ctx-social" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"></p></div>
-                            <hr class="border-slate-200 dark:border-slate-700">
-                            <div><h4 class="font-serif text-lg text-slate-800 dark:text-slate-200 mb-2">Political Climate</h4><p id="ctx-political" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"></p></div>
-                            <hr class="border-slate-200 dark:border-slate-700">
-                            <div><h4 class="font-serif text-lg text-slate-800 dark:text-slate-200 mb-2">Literary Movement</h4><p id="ctx-literary" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"></p></div>
+                            <div><h4 class="font-serif text-lg text-slate-900 dark:text-slate-200 mb-2 font-semibold">Social Factors</h4><p id="ctx-social" class="text-sm text-slate-800 dark:text-slate-400 leading-relaxed"></p></div>
+                            <hr class="border-slate-300 dark:border-slate-700">
+                            <div><h4 class="font-serif text-lg text-slate-900 dark:text-slate-200 mb-2 font-semibold">Political Climate</h4><p id="ctx-political" class="text-sm text-slate-800 dark:text-slate-400 leading-relaxed"></p></div>
+                            <hr class="border-slate-300 dark:border-slate-700">
+                            <div><h4 class="font-serif text-lg text-slate-900 dark:text-slate-200 mb-2 font-semibold">Literary Movement</h4><p id="ctx-literary" class="text-sm text-slate-800 dark:text-slate-400 leading-relaxed"></p></div>
                         </div>
                     </div>
                 </div>
@@ -369,8 +369,8 @@
         </main>
 
         <footer class="mt-20 text-center pb-8">
-            <button onclick="toggleAbout()" class="text-xs uppercase tracking-widest text-indigo-900/60 dark:text-indigo-300/60 hover:text-indigo-600 dark:hover:text-indigo-200 transition-colors mb-4 border-b border-dashed border-indigo-900/30 pb-1">About the Curators</button>
-            <p class="text-slate-400 text-sm font-light">&copy; 2023 Literary Database Project.</p>
+            <button onclick="toggleAbout()" class="text-xs uppercase tracking-widest text-indigo-900/70 dark:text-indigo-300/60 hover:text-indigo-700 dark:hover:text-indigo-200 transition-colors mb-4 border-b border-dashed border-indigo-900/30 pb-1 font-semibold">About the Curators</button>
+            <p class="text-slate-500 dark:text-slate-400 text-sm font-light">&copy; 2023 Literary Database Project.</p>
         </footer>
     </div>
 
@@ -520,7 +520,7 @@
             setTimeout(() => {
                 let html = `
                     <h2 class="serif-font text-4xl mb-2 text-indigo-900 dark:text-indigo-300 text-center md:text-left">${data.title}</h2>
-                    <h3 class="serif-font text-xl italic text-slate-400 mb-8 border-b border-indigo-100 dark:border-indigo-900 pb-4 text-center md:text-left">${data.originalTitle}</h3>
+                    <h3 class="serif-font text-xl italic text-slate-500 dark:text-slate-400 mb-8 border-b border-indigo-200 dark:border-indigo-900 pb-4 text-center md:text-left font-medium">${data.originalTitle}</h3>
                 `;
 
                 if (isJourneyMode) {
@@ -528,8 +528,8 @@
                     let textToRender = isReadAlongMode && stanza.guide ? stanza.guide : stanza.text;
 
                     html += `
-                        <div onclick="nextStanza()" class="journey-card py-12 px-4 rounded-xl border border-white/20 shadow-sm bg-white/20 dark:bg-black/20 text-center">
-                            <div class="poem-text serif-font text-2xl md:text-3xl leading-loose text-slate-800 dark:text-slate-100 ${isResonanceMode ? 'resonance-active' : ''}">
+                        <div onclick="nextStanza()" class="journey-card py-12 px-4 rounded-xl border border-white/20 shadow-sm bg-white/40 dark:bg-black/20 text-center">
+                            <div class="poem-text serif-font text-2xl md:text-3xl leading-loose text-slate-900 dark:text-slate-100 ${isResonanceMode ? 'resonance-active' : ''}">
                                 ${textToRender}
                             </div>
                         </div>
@@ -541,7 +541,7 @@
                     if(currentPoem === 'tinyfeet') generateAnimation('feet', stanza.mood);
                     
                 } else {
-                    html += `<div class="poem-text serif-font text-xl leading-loose text-slate-700 dark:text-slate-200 ${isResonanceMode ? 'resonance-active' : ''}">`;
+                    html += `<div class="poem-text serif-font text-xl leading-loose text-slate-900 dark:text-slate-200 ${isResonanceMode ? 'resonance-active' : ''}">`;
                     data.stanzas.forEach(stanza => {
                         let textToRender = isReadAlongMode && stanza.guide ? stanza.guide : stanza.text;
                         html += `<p class="mb-6">${textToRender}</p>`;
@@ -557,14 +557,14 @@
                 
                 document.getElementById('metadata-area').innerHTML = `
                     <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div><p class="text-slate-400 text-xs">Author</p><p class="font-medium text-slate-700 dark:text-slate-200">${data.author}</p></div>
-                        <div><p class="text-slate-400 text-xs">Year</p><p class="font-medium text-slate-700 dark:text-slate-200">${data.year}</p></div>
-                        <div><p class="text-slate-400 text-xs">Origin</p><p class="font-medium text-slate-700 dark:text-slate-200">${data.origin}</p></div>
+                        <div><p class="text-slate-600 dark:text-slate-400 text-xs font-medium">Author</p><p class="font-bold text-slate-900 dark:text-slate-200">${data.author}</p></div>
+                        <div><p class="text-slate-600 dark:text-slate-400 text-xs font-medium">Year</p><p class="font-bold text-slate-900 dark:text-slate-200">${data.year}</p></div>
+                        <div><p class="text-slate-600 dark:text-slate-400 text-xs font-medium">Origin</p><p class="font-bold text-slate-900 dark:text-slate-200">${data.origin}</p></div>
                     </div>`;
                 
                 document.getElementById('analysis-area').innerText = data.analysis;
                 document.getElementById('mood-area').innerHTML = data.themes.map(theme => 
-                    `<span class="px-3 py-1 bg-white/50 dark:bg-slate-700/50 rounded-md text-xs font-semibold uppercase tracking-wider text-indigo-900 dark:text-indigo-200 border border-indigo-100 dark:border-indigo-900">${theme}</span>`
+                    `<span class="px-3 py-1 bg-white/60 dark:bg-slate-700/50 rounded-md text-xs font-bold uppercase tracking-wider text-indigo-900 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-900 shadow-sm">${theme}</span>`
                 ).join('');
 
                 document.getElementById('ctx-social').innerText = data.history.social;
@@ -588,7 +588,7 @@
             const container = document.getElementById('journey-dots');
             let dotsHtml = '';
             for(let i=0; i<count; i++) {
-                let opacity = i === journeyIndex ? 'bg-slate-800 dark:bg-white scale-125' : 'bg-slate-400 dark:bg-slate-600';
+                let opacity = i === journeyIndex ? 'bg-slate-900 dark:bg-white scale-125' : 'bg-slate-400 dark:bg-slate-600';
                 dotsHtml += `<div class="w-2 h-2 rounded-full transition-all duration-300 ${opacity}"></div>`;
             }
             container.innerHTML = dotsHtml;
@@ -596,20 +596,20 @@
 
         function updateBackground(moodClass) {
             const body = document.getElementById('main-body');
-            body.className = `min-h-screen text-slate-700 dark:text-slate-200 overflow-x-hidden selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-800 dark:selection:text-indigo-200 ${moodClass}`;
+            body.className = `min-h-screen text-slate-900 dark:text-slate-200 overflow-x-hidden selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-800 dark:selection:text-indigo-200 ${moodClass}`;
         }
 
         // 4. TOGGLES
         function toggleJourney() {
             isJourneyMode = !isJourneyMode;
             journeyIndex = 0;
-            updateToggleUI('journey', isJourneyMode, 'bg-purple-600');
+            updateToggleUI('journey', isJourneyMode, 'bg-purple-700');
             loadPoem();
         }
 
         function toggleReadAlong() {
             isReadAlongMode = !isReadAlongMode;
-            updateToggleUI('read', isReadAlongMode, 'bg-pink-600');
+            updateToggleUI('read', isReadAlongMode, 'bg-pink-700');
             
             // SHOW TUTORIAL ONCE
             if(isReadAlongMode && !sessionStorage.getItem('readTutorialShown')) {
@@ -625,13 +625,13 @@
 
         function toggleResonance() {
             isResonanceMode = !isResonanceMode;
-            updateToggleUI('resonance', isResonanceMode, 'bg-indigo-600');
+            updateToggleUI('resonance', isResonanceMode, 'bg-indigo-700');
             loadPoem(); 
         }
 
         function toggleContext() {
             isContextMode = !isContextMode;
-            updateToggleUI('context', isContextMode, 'bg-emerald-500');
+            updateToggleUI('context', isContextMode, 'bg-emerald-600');
             const viewAnalysis = document.getElementById('view-analysis');
             const viewContext = document.getElementById('view-context');
             if (isContextMode) {
@@ -648,7 +648,7 @@
             if (isActive) {
                 indicator.classList.remove('bg-slate-300', 'dark:bg-slate-600');
                 indicator.classList.add(activeClass.replace('bg-', 'bg-'), 'dark:' + activeClass); 
-                indicator.className = `w-3 h-3 rounded-full transition-colors duration-300 ${activeClass} dark:${activeClass.replace('600', '400')}`;
+                indicator.className = `w-3 h-3 rounded-full transition-colors duration-300 ${activeClass} dark:${activeClass.replace('700', '400')}`;
             } else {
                 indicator.className = 'w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors duration-300';
             }
@@ -659,10 +659,10 @@
             const btnLaugh = document.getElementById('btn-laughter');
             if(currentPoem === 'tinyfeet') {
                 btnTiny.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 bg-white dark:bg-slate-700 shadow-sm text-indigo-900 dark:text-white font-medium transform scale-105";
-                btnLaugh.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 hover:bg-white/50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400";
+                btnLaugh.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 hover:bg-white/50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-400";
             } else {
                 btnLaugh.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 bg-white dark:bg-slate-700 shadow-sm text-indigo-900 dark:text-white font-medium transform scale-105";
-                btnTiny.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 hover:bg-white/50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400";
+                btnTiny.className = "px-6 py-2 rounded-full text-sm transition-all duration-300 hover:bg-white/50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-400";
             }
         }
 
