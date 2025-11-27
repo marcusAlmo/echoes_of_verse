@@ -936,6 +936,9 @@
                 const content = document.querySelector('#intro-modal .glass-panel');
                 content.classList.remove('scale-95'); content.classList.add('scale-100');
             } else {
+                // Always ensure the default poem is Tiny Feet on page load/refresh
+                changePoem('tinyfeet');
+                updateButtonStyles();
                 startReadingTimer();
             }
         }
